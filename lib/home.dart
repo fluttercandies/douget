@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  String _checkSharedText(String sharedUrl) {
+  String _checkSharedText(String sharedUrl, {bool? fromClipBoard}) {
     RegExp r = RegExp(
         r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+");
     RegExpMatch? firstMatch = r.firstMatch(sharedUrl);
@@ -64,9 +64,12 @@ class _HomePageState extends State<HomePage> {
       String? sharedUrl = firstMatch.group(0);
       if (sharedUrl != null && _isDouYinSharedUrl(sharedUrl)) {
         return sharedUrl.trim();
+      } else {
+        if (fromClipBoard == null) _showMessage("分享链接格式不正确!");
       }
+    } else {
+      if (fromClipBoard == null) _showMessage("分享链接格式不正确!");
     }
-    _showMessage("分享链接格式不正确!");
     return "";
   }
 
@@ -79,7 +82,8 @@ class _HomePageState extends State<HomePage> {
     if (clipboardData != null &&
         clipboardData.text != null &&
         clipboardData.text!.isNotEmpty) {
-      String sharedUrl = _checkSharedText(clipboardData.text ?? "");
+      String sharedUrl =
+          _checkSharedText(clipboardData.text ?? "", fromClipBoard: true);
       if (sharedUrl.isNotEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
