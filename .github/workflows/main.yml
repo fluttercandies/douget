@@ -6,11 +6,8 @@ name: Build and Release apk
 # 工作流程触发的时机，这里是当一个版本标签推送到仓库时触发
 on:
   push:
-    tags:
-      - v*
-    #branches: [ master ]
-  #pull_request:
-    #branches: [ master ]
+    branches:
+      - main
 
 # 这个工作流程需要执行的任务
 jobs:
@@ -40,7 +37,7 @@ jobs:
       - name: Release apk
         uses: ncipollo/release-action@v1.5.0
         with:
-          tag_name: ${{ github.ref }}
+          tag_name: "v1.0"
           allowUpdates: true
           artifacts: "build/app/outputs/apk/release/*.apk"
           token: ${{ secrets.RELEASE_TOKEN }}
