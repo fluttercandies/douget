@@ -1,4 +1,4 @@
-import 'package:douget/home.dart';
+import 'package:douget/home_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {

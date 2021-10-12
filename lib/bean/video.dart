@@ -51,28 +51,29 @@ T? asT<T extends Object?>(dynamic value, [T? defaultValue]) {
   return defaultValue;
 }
 
-class GalleryResult {
-  GalleryResult({
+class VideoResult {
+  VideoResult({
     this.itemList,
   });
 
-  factory GalleryResult.fromJson(Map<String, dynamic> jsonRes) {
-    final List<GalleryItem>? itemList = jsonRes['item_list'] is List ? <GalleryItem>[] : null;
+  factory VideoResult.fromJson(Map<String, dynamic> jsonRes) {
+    final List<VideoItem>? itemList =
+        jsonRes['item_list'] is List ? <VideoItem>[] : null;
     if (itemList != null) {
       for (final dynamic item in jsonRes['item_list']!) {
         if (item != null) {
           tryCatch(() {
-            itemList.add(GalleryItem.fromJson(asT<Map<String, dynamic>>(item)!));
+            itemList.add(VideoItem.fromJson(asT<Map<String, dynamic>>(item)!));
           });
         }
       }
     }
-    return GalleryResult(
+    return VideoResult(
       itemList: itemList,
     );
   }
 
-  List<GalleryItem>? itemList;
+  List<VideoItem>? itemList;
 
   @override
   String toString() {
@@ -84,36 +85,22 @@ class GalleryResult {
       };
 }
 
-class GalleryItem {
-  GalleryItem({
+class VideoItem {
+  VideoItem({
     this.video,
-    this.images,
     this.desc,
   });
 
-  factory GalleryItem.fromJson(Map<String, dynamic> jsonRes) {
-    final List<GalleryImage>? images = jsonRes['images'] is List ? <GalleryImage>[] : null;
-    if (images != null) {
-      for (final dynamic item in jsonRes['images']!) {
-        if (item != null) {
-          tryCatch(() {
-            images.add(GalleryImage.fromJson(asT<Map<String, dynamic>>(item)!));
-          });
-        }
-      }
-    }
-
-    return GalleryItem(
+  factory VideoItem.fromJson(Map<String, dynamic> jsonRes) {
+    return VideoItem(
       video: jsonRes['video'] == null
           ? null
           : Video.fromJson(asT<Map<String, dynamic>>(jsonRes['video'])!),
-      images: images,
       desc: asT<String?>(jsonRes['desc']),
     );
   }
 
   Video? video;
-  List<GalleryImage>? images;
   String? desc;
 
   @override
@@ -123,22 +110,27 @@ class GalleryItem {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'video': video,
-        'images': images,
         'desc': desc,
       };
 }
 
 class Video {
   Video({
+    this.playAddr,
     this.cover,
   });
 
   factory Video.fromJson(Map<String, dynamic> jsonRes) => Video(
+        playAddr: jsonRes['play_addr'] == null
+            ? null
+            : PlayAddr.fromJson(
+                asT<Map<String, dynamic>>(jsonRes['play_addr'])!),
         cover: jsonRes['cover'] == null
             ? null
             : Cover.fromJson(asT<Map<String, dynamic>>(jsonRes['cover'])!),
       );
 
+  PlayAddr? playAddr;
   Cover? cover;
 
   @override
@@ -147,12 +139,52 @@ class Video {
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
+        'play_addr': playAddr,
         'cover': cover,
+      };
+}
+
+class PlayAddr {
+  PlayAddr({
+    this.urlList,
+    this.uri,
+  });
+
+  factory PlayAddr.fromJson(Map<String, dynamic> jsonRes) {
+    final List<String>? urlList =
+        jsonRes['url_list'] is List ? <String>[] : null;
+    if (urlList != null) {
+      for (final dynamic item in jsonRes['url_list']!) {
+        if (item != null) {
+          tryCatch(() {
+            urlList.add(asT<String>(item)!);
+          });
+        }
+      }
+    }
+    return PlayAddr(
+      urlList: urlList,
+      uri: asT<String?>(jsonRes['uri']),
+    );
+  }
+
+  List<String>? urlList;
+  String? uri;
+
+  @override
+  String toString() {
+    return jsonEncode(this);
+  }
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'url_list': urlList,
+        'uri': uri,
       };
 }
 
 class Cover {
   Cover({
+    this.uri,
     this.urlList,
   });
 
@@ -169,10 +201,12 @@ class Cover {
       }
     }
     return Cover(
+      uri: asT<String?>(jsonRes['uri']),
       urlList: urlList,
     );
   }
 
+  String? uri;
   List<String>? urlList;
 
   @override
@@ -181,40 +215,7 @@ class Cover {
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'url_list': urlList,
-      };
-}
-
-class GalleryImage {
-  GalleryImage({
-    this.urlList,
-  });
-
-  factory GalleryImage.fromJson(Map<String, dynamic> jsonRes) {
-    final List<String>? urlList =
-        jsonRes['url_list'] is List ? <String>[] : null;
-    if (urlList != null) {
-      for (final dynamic item in jsonRes['url_list']!) {
-        if (item != null) {
-          tryCatch(() {
-            urlList.add(asT<String>(item)!);
-          });
-        }
-      }
-    }
-    return GalleryImage(
-      urlList: urlList,
-    );
-  }
-
-  List<String>? urlList;
-
-  @override
-  String toString() {
-    return jsonEncode(this);
-  }
-
-  Map<String, dynamic> toJson() => <String, dynamic>{
+        'uri': uri,
         'url_list': urlList,
       };
 }

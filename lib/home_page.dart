@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
-import 'package:douget/download.dart';
-import 'package:douget/gallery.dart';
-import 'package:douget/video.dart';
+import 'package:douget/bean/download.dart';
+import 'package:douget/bean/gallery.dart';
+import 'package:douget/bean/video.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
