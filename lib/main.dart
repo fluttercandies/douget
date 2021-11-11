@@ -12,8 +12,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'DouGet',
-      theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xfff3f8fb),
+      theme: ThemeData(primarySwatch: Colors.blue),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
         primarySwatch: Colors.blue,
       ),
       home: const HomePage(),

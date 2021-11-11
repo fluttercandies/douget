@@ -280,7 +280,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text(bean.isGallery ? '保存图集到相册' : '保存视频到相册'),
               onPressed: () async {
                 Navigator.of(context).pop(true);
@@ -343,9 +343,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("DouGet"),
-      ),
+      appBar: AppBar(title: const Text("DouGet")),
       body: SingleChildScrollView(
         child: Container(
           alignment: Alignment.center,
@@ -354,10 +352,10 @@ class _HomePageState extends State<HomePage> {
             children: [
               TextField(
                 controller: _textEditingController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   hintText: "复制分享链接到此处",
                   border: InputBorder.none,
-                  fillColor: Colors.white,
+                  fillColor: Theme.of(context).bottomAppBarColor,
                   filled: true,
                 ),
                 maxLines: 10,
@@ -366,14 +364,10 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 width: double.infinity,
                 height: 48.0,
-                child: RaisedButton(
-                  color: Colors.green,
+                child: ElevatedButton(
                   child: const Text(
                     '清除',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                    ),
+                    style: TextStyle(fontSize: 16.0),
                   ),
                   onPressed: () async {
                     FocusScope.of(context).unfocus();
@@ -385,14 +379,10 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 width: double.infinity,
                 height: 48.0,
-                child: RaisedButton(
-                  color: Colors.blue,
+                child: ElevatedButton(
                   child: const Text(
                     '粘贴',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                    ),
+                    style: TextStyle(fontSize: 16.0),
                   ),
                   onPressed: () async {
                     FocusScope.of(context).unfocus();
@@ -422,7 +412,7 @@ class _HomePageState extends State<HomePage> {
         },
         tooltip: '下载',
         child: _loading
-            ? const CircularProgressIndicator(color: Colors.white)
+            ? const CircularProgressIndicator()
             : const Icon(Icons.download),
       ),
     );
