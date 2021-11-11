@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
@@ -6,9 +7,9 @@ import 'package:douget/bean/gallery.dart';
 import 'package:douget/bean/video.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:photo_manager/photo_manager.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -25,12 +26,7 @@ class _HomePageState extends State<HomePage> {
   final Dio _dio = Dio(
     BaseOptions(
       followRedirects: false,
-      validateStatus: (status) {
-        if (status == null) {
-          return true;
-        }
-        return status < 500;
-      },
+      validateStatus: (status) => status == null || status < 500,
     ),
   );
 
@@ -300,24 +296,28 @@ class _HomePageState extends State<HomePage> {
                         }
                         Response response = await Dio().get(url,
                             options: Options(responseType: ResponseType.bytes));
-                        final result = await ImageGallerySaver.saveImage(
+                        final AssetEntity? result =
+                            await PhotoManager.editor.saveImage(
                           Uint8List.fromList(response.data),
-                          quality: 100,
-                          name: name,
+                          title: name,
                         );
-                        if (result['isSuccess']) {
+                        if (result != null) {
                           success++;
                         }
                       }
                       _showMessage("$success张图片已保存到相册!");
                     } else if (bean.isVideo) {
                       int time = DateTime.now().millisecondsSinceEpoch;
-                      String savePath = appDocDir.path + "/douget_$time.mp4";
+                      String filename = 'douget_$time.mp4';
+                      String savePath = appDocDir.path + filename;
 
                       await Dio().download(bean.videoUrl!, savePath);
-                      final result = await ImageGallerySaver.saveFile(savePath,
-                          name: "douget_$time");
-                      if (result['isSuccess']) {
+                      final AssetEntity? result =
+                          await PhotoManager.editor.saveVideo(
+                        File(savePath),
+                        title: filename,
+                      );
+                      if (result != null) {
                         _showMessage("已保存到相册!");
                       }
                     }
