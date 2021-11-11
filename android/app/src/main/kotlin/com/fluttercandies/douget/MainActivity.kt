@@ -1,4 +1,4 @@
-package com.lycstar.douget
+package com.fluttercandies.douget
 
 import io.flutter.embedding.android.FlutterActivity
 
