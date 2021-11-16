@@ -1,7 +1,5 @@
 # douget
 
-痘印无水印图集,视频下载App by Flutter.
-
 ## Getting Started
 
 This project is a starting point for a Flutter application.
